@@ -76,3 +76,40 @@ function renderYAxes(newYScale, yAxis) {
     return yAxis;
 }
 
+// functions used for updating circles group with a transition to
+// new circles for x axis
+function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cx", d => newXScale(d[chosenXAxis]));
+  
+    return circlesGroup;
+}
+// new circles for y
+function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cy", d => newYScale(d[chosenYAxis]));
+  
+    return circlesGroup;
+}
+// Updating text so it moves with with a transition to new circles
+function renderXText(circlesGroup, newXScale, chosenXAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("dx", d => newXScale(d[chosenXAxis]));
+  
+    return circlesGroup;
+}
+function renderYText(circlesGroup, newYScale, chosenYAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("dy", d => newYScale(d[chosenYAxis]));
+  
+    return circlesGroup;
+}
+
