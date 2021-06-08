@@ -25,3 +25,22 @@ var svg = d3
 // Append an SVG group
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+//We need to choose which axes to display first
+// Initial Params
+var chosenXAxis = "poverty";
+var chosenYAxis = "healthcare";
+
+// Retrieve data from the CSV file and execute everything below
+d3.csv("assets/data/data.csv").then(function(healthRisks, err) {
+    if (err) throw err;
+  
+    // parse data
+    healthRisks.forEach(function(data) {
+      data.age = +data.age;
+      data.smokes = +data.smokes;
+      data.healthcare = +data.healthcare;
+      data.poverty = +data.poverty;
+      data.abbr = data.abbr;
+      data.income = +data.income;
+    });
