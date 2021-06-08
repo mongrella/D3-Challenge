@@ -44,3 +44,18 @@ d3.csv("assets/data/data.csv").then(function(healthRisks, err) {
       data.abbr = data.abbr;
       data.income = +data.income;
     });
+
+//This will select which column of data to do the peice of code below on
+  // xLinearScale function above csv import
+    var xLinearScale = xScale(healthRisks, chosenXAxis);
+        .domain([0, d3.max(healthRisks, d => d.poverty)])
+        .range([width, 0]);
+
+// Create y scale function
+    var yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(healthRisks, d => d.healthcare)])
+        .range([height, 0]);
+
+// Create initial axis functions
+    var bottomAxis = d3.axisBottom(xLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
