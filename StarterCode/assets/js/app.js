@@ -59,3 +59,13 @@ d3.csv("assets/data/data.csv").then(function(healthRisks, err) {
 // Create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
+
+// append to our x axis
+    var xAxis = chartGroup.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis);
+
+// append y axis
+    chartGroup.append("g")
+        .call(leftAxis);
