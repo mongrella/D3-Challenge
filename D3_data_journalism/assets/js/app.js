@@ -33,8 +33,8 @@ var chosenYAxis = "healthcare";
 function xScale(healthData, chosenXAxis) {
     // create scales
     var xLinearScale = d3.scaleLinear()
-      .domain([d3.min(healthData, d => d[chosenXAxis]) * 0.8,
-        d3.max(healthData, d => d[chosenXAxis]) * 1.2
+      .domain([d3.min(healthData, data => data[chosenXAxis]) * 0.8,
+        d3.max(healthData, data => data[chosenXAxis]) * 1.2
       ])
       .range([0, width]);
   
@@ -46,7 +46,7 @@ function xScale(healthData, chosenXAxis) {
 function yScale(healthData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(healthData, d => d[chosenYAxis]) * 0.8,d3.max(healthData, d => d[chosenYAxis]) * 1.2])
+      .domain([d3.min(healthData, data => data[chosenYAxis]) * 0.8,d3.max(healthData, data => data[chosenYAxis]) * 1.2])
       .range([height, 0]);
   
     return yLinearScale;
@@ -82,7 +82,7 @@ function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 
     circlesGroup.transition()
       .duration(1000)
-      .attr("cx", d => newXScale(d[chosenXAxis]));
+      .attr("cx", data => newXScale(data[chosenXAxis]));
   
     return circlesGroup;
 }
@@ -91,7 +91,7 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
 
     circlesGroup.transition()
       .duration(1000)
-      .attr("cy", d => newYScale(d[chosenYAxis]));
+      .attr("cy", data => newYScale(data[chosenYAxis]));
   
     return circlesGroup;
 }
@@ -100,7 +100,7 @@ function renderXText(circlesGroup, newXScale, chosenXAxis) {
 
     circlesGroup.transition()
       .duration(1000)
-      .attr("dx", d => newXScale(d[chosenXAxis]));
+      .attr("dx", data => newXScale(data[chosenXAxis]));
   
     return circlesGroup;
 }
@@ -108,7 +108,7 @@ function renderYText(circlesGroup, newYScale, chosenYAxis) {
 
     circlesGroup.transition()
       .duration(1000)
-      .attr("dy", d => newYScale(d[chosenYAxis]));
+      .attr("dy", data => newYScale(data[chosenYAxis]));
   
     return circlesGroup;
 }
@@ -145,8 +145,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
       .offset([80, -60])
       .style("color", "white")
       .style("background", 'black')
-      .html(function(d) {
-        return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}%<br>${ylabel} ${d[chosenYAxis]}%`);
+      .html(function(data) {
+        return (`${data.state}<br>${xlabel} ${data[chosenXAxis]}%<br>${ylabel} ${data[chosenYAxis]}%`);
       });
   
     circlesGroup.call(toolTip);
@@ -169,22 +169,22 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
     if (err) throw err;
   
     // parse data
-    healthData.forEach(d => {
-      d.poverty = +d.poverty;
-      d.povertyMoe = +d.povertyMoe;
-      d.age = +d.age;
-      d.ageMoe = +d.ageMoe;
-      d.income = +d.income;
-      d.incomeMoe = +d.incomeMoe;
-      d.healthcare = +d.healthcare;
-      d.healthcareLow = +d.healthcareLow;
-      d.healthcareHigh = +d.healthcareHigh;
-      d.obesity = +d.obesity;
-      d.obesityLow = +d.obesityLow;
-      d.obesityHigh = +d.obesityHigh;
-      d.smokes = +d.smokes;
-      d.smokesLow = +d.smokesLow;
-      d.smokesHigh = +d.smokesHigh;
+    healthData.forEach(data => {
+      data.poverty = +data.poverty;
+      data.povertyMoe = +data.povertyMoe;
+      data.age = +data.age;
+      data.ageMoe = +data.ageMoe;
+      data.income = +data.income;
+      data.incomeMoe = +data.incomeMoe;
+      data.healthcare = +data.healthcare;
+      data.healthcareLow = +data.healthcareLow;
+      data.healthcareHigh = +data.healthcareHigh;
+      data.obesity = +data.obesity;
+      data.obesityLow = +data.obesityLow;
+      data.obesityHigh = +data.obesityHigh;
+      data.smokes = +data.smokes;
+      data.smokesLow = +data.smokesLow;
+      data.smokesHigh = +data.smokesHigh;
     });
   
     //This will select which column of data to do the peice of code below on
@@ -208,7 +208,27 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
     var yAxis = chartGroup.append("g")
       .call(leftAxis);
   
+    // append initial circles
+    var circlesGroup = chartGroup.selectAll("circle")
+      .data(healthData)
+      .enter()
+      .append("g");
 
+    //we are placing the cirlces on the page and putting the label on x and y axis
+    var circles = circlesGroup.append("circle")
+      .attr("cx", data => xLinearScale(data[chosenXAxis]))
+      .attr("cy", data => yLinearScale(data[chosenYAxis]))
+      .attr("r", 15)
+      .classed('stateCircle', true);
+
+    // append text inside circles
+    var circlesText = circlesGroup.append("text")
+      .text(data => data.abbr)
+      .attr("dx", data => xLinearScale(data[chosenXAxis]))
+      .attr("dy", data => yLinearScale(data[chosenYAxis]))
+      .classed('stateText', true);
+  
+    
     });
   }).catch(function(error) {
     console.log(error);
