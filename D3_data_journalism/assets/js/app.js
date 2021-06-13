@@ -113,3 +113,56 @@ function renderYText(circlesGroup, newYScale, chosenYAxis) {
     return circlesGroup;
 }
 
+//They are making sure the tooltip is attached to the correct circles when graph changes
+// function used for updating circles group with new tooltip
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+
+    var xlabel;
+    var ylabel;
+  
+    if (chosenXAxis === "poverty") {
+      xlabel = "In Poverty:";
+    }
+    else if (chosenXAxis === "age") {
+      xlabel = "Age:";
+    }
+    else if (chosenXAxis === "income"){
+        xlabel = "Household income:"
+    }
+
+    if (chosenYAxis === 'healthcare'){
+        ylabel = "Lacks Healthcare:"
+    }
+    else if (chosenYAxis === 'obesity'){
+        ylabel = "Obesity:"
+    }
+    else if (chosenYAxis === 'smokes'){
+        ylabel = "Smokes:"
+    }
+  
+    var toolTip = d3.tip()
+      .attr("class", "tooltip")
+      .offset([80, -60])
+      .style("color", "white")
+      .style("background", 'black')
+      .html(function(d) {
+        return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}%<br>${ylabel} ${d[chosenYAxis]}%`);
+      });
+  
+    circlesGroup.call(toolTip);
+  
+    circlesGroup.on("mouseover", function(healthData) {
+      toolTip.show(healthData);
+    })
+      // onmouseout event
+    .on("mouseout", function(healthData, index) {
+      toolTip.hide(healthData);
+    });
+  
+    return circlesGroup;
+}
+
+    });
+  }).catch(function(error) {
+    console.log(error);
+  });
