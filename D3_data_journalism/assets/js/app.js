@@ -162,7 +162,32 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     return circlesGroup;
 }
 
+//This is the actual code for what is happening
+// Retrieve data from the CSV file and execute everything below
+d3.csv("assets/data/data.csv").then(function(healthData, err) {
+    // console.log(healthData)
+    if (err) throw err;
+  
+    // parse data
+    healthData.forEach(d => {
+      d.poverty = +d.poverty;
+      d.povertyMoe = +d.povertyMoe;
+      d.age = +d.age;
+      d.ageMoe = +d.ageMoe;
+      d.income = +d.income;
+      d.incomeMoe = +d.incomeMoe;
+      d.healthcare = +d.healthcare;
+      d.healthcareLow = +d.healthcareLow;
+      d.healthcareHigh = +d.healthcareHigh;
+      d.obesity = +d.obesity;
+      d.obesityLow = +d.obesityLow;
+      d.obesityHigh = +d.obesityHigh;
+      d.smokes = +d.smokes;
+      d.smokesLow = +d.smokesLow;
+      d.smokesHigh = +d.smokesHigh;
     });
+  
+   
   }).catch(function(error) {
     console.log(error);
   });
