@@ -187,7 +187,29 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
       d.smokesHigh = +d.smokesHigh;
     });
   
-   
+    //This will select which column of data to do the peice of code below on
+    // xLinearScale function above csv import
+    var xLinearScale = xScale(healthData, chosenXAxis);
+  
+    // Create y scale function
+    var yLinearScale = yScale(healthData, chosenYAxis);
+  
+    // Create initial axis functions
+    var bottomAxis = d3.axisBottom(xLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+  
+    // append x axis
+    var xAxis = chartGroup.append("g")
+      .classed("x-axis", true)
+      .attr("transform", `translate(0, ${height})`)
+      .call(bottomAxis);
+  
+    // append y axis
+    var yAxis = chartGroup.append("g")
+      .call(leftAxis);
+  
+
+    });
   }).catch(function(error) {
     console.log(error);
   });
