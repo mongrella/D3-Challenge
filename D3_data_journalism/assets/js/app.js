@@ -52,7 +52,6 @@ function yScale(healthData, chosenYAxis) {
     return yLinearScale;
   
 }
-
 // function used for updating xAxis var upon click on axis label
 // renderAxes resets the axes depending on what you select
 function renderXAxes(newXScale, xAxis) {
